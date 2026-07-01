@@ -1,0 +1,181 @@
+我要做一个Project, 关于Bahasa Isyarat Malaysia BIM 的教学产品. 这个产品是独立的, 他无需网络便可运行, 能带去任何地点. 
+它使用的材料有, respberrypi4 model B, raspberry PI 7inch touchscreen, HD webcam, speacker 和power supply. 
+我的产品需要能顺畅地在respberry pi 4 运行, 没有任何卡顿. 
+
+首先, 我需要有一个学习页面展示在touchscreen里, 页面中能够实时展示内容不卡顿. 
+一开始开机后页面会是在选项页面, 他是一个目录来的, 使用者能够选择学习的单词, 很多单词时会有下滑功能. 
+当使用者选定特定的单词后,就会跳转到该词汇的学习内容. 这个页面右上角显示现在学习的手语的名称不用太大(比如Hello).
+然后中间荧幕的左半显示手势的照片/动作的教学视频, 而右半实时显示使用者现在的动作.接着下方有一些按键.
+第一个按键是退出按钮, 按了后会回到主页面, 使用者能够重新选择他要学习的单词, 按了后就会跳转到对应的学习内容. 
+第二个按键是左半的教学视频重播按钮(如果是视频的话, 图片就不用了)(一开始教学视频只会播放一遍). 
+这些就是第一开始的学习页面要求.
+
+接着是学习内容的设计. 
+首先学习内容时逐步教学的, 一步一步学习, 比如学习Hello手语时, 第一步会先展示手语的手部握法的图片在左侧, 而右侧会实时显示和检查使用者.
+使用者需要做出对应正确的手势(手部动作), 并且维持住这个手势2秒以上(会显示青色的进度条), 才能算正确. 
+首部动作错误时, 显示"动作错误", 正确后累积进度条, 满后显示恭喜正确!!.
+接着如果教学没有下文了(简单的动作比如A, B, C,...),便显示要再次学习/主页面, 给使用者选择. 
+如果学习还有下文(有特定手部放置位子的需求),便自动到下一步, 下一步可能学习手部放置位子, 比如放在头上, 腰上或者胸上. 一样的流程, 验证2秒等等. 
+如果还有第3步骤, 有移动的需求就到第3部, 因为是连贯动作需求, 就不会有检测进度条了, 而是动作检测正确性, 需要做正确动作3次, 才算正确.
+完成后一样, 会问是否回到主页/再来一次.
+
+我现在想在自己电脑设计和测试先, 完成后再把完美的方案放进respberry Pi 4里. 
+自己电脑测试阶段, 以滑鼠代表touchscreen.
+
+你现在是专业的设计师和程序员, 以专业的角度设计和完成这些要求. 
+你需要确保所有的流程能畅通无阻的运行, 文件之间不会冲突等等.
+
+# 创建一个名为 venv 的虚拟环境
+python -m venv venv
+
+# 激活虚拟环境
+# Windows 用户输入：
+venv\Scripts\activate
+
+pip install pyqt5 opencv-python-headless mediapipe
+
+(venv) D:\appforwork\BIM_Project>python
+Python 3.10.11 (tags/v3.10.11:7d4cc5a, Apr  5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import mediapipe
+>>> print(mediapipe.__file__)
+D:\appforwork\BIM_Project\venv\lib\site-packages\mediapipe\__init__.py
+
+(venv) D:\appforwork\BIM_Project>pip install mediapipe --no-cache-dir
+Collecting mediapipe
+  Downloading mediapipe-0.10.35-py3-none-win_amd64.whl (10.9 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.9/10.9 MB 2.3 MB/s eta 0:00:00
+Requirement already satisfied: certifi in d:\appforwork\bim_project\venv\lib\site-packages (from mediapipe) (2026.5.20)
+Requirement already satisfied: opencv-contrib-python in d:\appforwork\bim_project\venv\lib\site-packages (from mediapipe) (4.13.0.92)
+Requirement already satisfied: absl-py~=2.3 in d:\appforwork\bim_project\venv\lib\site-packages (from mediapipe) (2.4.0)
+Requirement already satisfied: matplotlib in d:\appforwork\bim_project\venv\lib\site-packages (from mediapipe) (3.10.9)
+Requirement already satisfied: numpy in d:\appforwork\bim_project\venv\lib\site-packages (from mediapipe) (2.2.6)
+Requirement already satisfied: sounddevice~=0.5 in d:\appforwork\bim_project\venv\lib\site-packages (from mediapipe) (0.5.5)
+Requirement already satisfied: flatbuffers~=25.9 in d:\appforwork\bim_project\venv\lib\site-packages (from mediapipe) (25.12.19)
+Requirement already satisfied: cffi in d:\appforwork\bim_project\venv\lib\site-packages (from sounddevice~=0.5->mediapipe) (2.0.0)
+Requirement already satisfied: fonttools>=4.22.0 in d:\appforwork\bim_project\venv\lib\site-packages (from matplotlib->mediapipe) (4.63.0)
+Requirement already satisfied: python-dateutil>=2.7 in d:\appforwork\bim_project\venv\lib\site-packages (from matplotlib->mediapipe) (2.9.0.post0)
+Requirement already satisfied: kiwisolver>=1.3.1 in d:\appforwork\bim_project\venv\lib\site-packages (from matplotlib->mediapipe) (1.5.0)
+Requirement already satisfied: contourpy>=1.0.1 in d:\appforwork\bim_project\venv\lib\site-packages (from matplotlib->mediapipe) (1.3.2)
+Requirement already satisfied: cycler>=0.10 in d:\appforwork\bim_project\venv\lib\site-packages (from matplotlib->mediapipe) (0.12.1)
+Requirement already satisfied: pillow>=8 in d:\appforwork\bim_project\venv\lib\site-packages (from matplotlib->mediapipe) (12.2.0)
+Requirement already satisfied: packaging>=20.0 in d:\appforwork\bim_project\venv\lib\site-packages (from matplotlib->mediapipe) (26.2)
+Requirement already satisfied: pyparsing>=3 in d:\appforwork\bim_project\venv\lib\site-packages (from matplotlib->mediapipe) (3.3.2)
+Requirement already satisfied: six>=1.5 in d:\appforwork\bim_project\venv\lib\site-packages (from python-dateutil>=2.7->matplotlib->mediapipe) (1.17.0)
+Requirement already satisfied: pycparser in d:\appforwork\bim_project\venv\lib\site-packages (from cffi->sounddevice~=0.5->mediapipe) (3.0)
+Installing collected packages: mediapipe
+Successfully installed mediapipe-0.10.35
+
+BIM_Project/
+│
+├── main.py                  # 🚀 程序的唯一入口，负责启动和全局页面切换路由
+├── requirements.txt         # 记录所需依赖库，方便未来在树莓派上一键安装环境
+│
+├── assets/                  # 📦 所有离线静态资源 (无网络运行的核心)
+│   ├── models/              # 存放 MediaPipe 的离线模型文件 (如 hand_landmarker.task)
+│   ├── videos/              # 存放教学视频 (如 Hello.mp4, Tolong.mp4)
+│   ├── images/              # 存放按键图标、静态手势示范图、UI 背景等
+│   └── fonts/               # (可选) 存放自定义字体，确保树莓派上不乱码
+│
+├── ui/                      # 🖥️ 用户界面模块 (只负责长什么样，不处理底层逻辑)
+│   ├── __init__.py
+│   ├── main_menu.py         # 首页目录界面 (支持触摸滑动、词汇选择)
+│   └── learning_page.py     # 学习界面 (左视频/图，右摄像头，底部按钮，进度条)
+│
+├── core/                    # ⚙️ 核心业务模块 (系统的心脏)
+│   ├── __init__.py
+│   ├── vision_engine.py     # 专门负责初始化 MediaPipe 和读取摄像头 (分离 UI 和算法防止卡顿)
+│   └── state_machine.py     # 教学状态机 (控制阶段一、阶段二、阶段三的流转与计分)
+│
+└── gestures/                # ✌️ 具体手势判定算法 (每加一个新词，就在这里加一个文件)
+    ├── __init__.py
+    ├── base_gesture.py      # 基础手势类 (统一定义判定规则接口)
+    ├── hello.py             # Hello 专属坐标判定逻辑
+    ├── selamat_jalan.py     # 再见 专属坐标判定逻辑
+    └── tolong.py            # 帮忙 专属坐标判定逻辑, 还有其他的ABCD到Z
+
+https://github.com/Nevcairiel/LAVFilters/releases
+
+反转video
+
+增加 #test.py 以便更好的收集数据写代码.
+
+def keyPressEvent(self, event):
+        """
+        🚀 【新增核心监听】：当在当前学习/测试页面时，按键触发数据采集
+        """
+        # 如果当前进来的不是 "Test" 测试模式，则不触发任何逻辑，交还给系统默认处理
+        if self.current_lesson != "Test":
+            super().keyPressEvent(event)
+            return
+
+        # 🎯 设定触发按键：这里以键盘上的 [空格键] 为例（Qt.Key_Space）
+        # 你也可以根据喜好改成 [Enter键](Qt.Key_Return) 或 字母键 [D键](Qt.Key_D)
+        if event.key() == Qt.Key_Space:
+            # 安全检查：确保后台视觉引擎不仅初始化了，而且里面的手势实例确实存在
+            if hasattr(self, 'vision_engine') and self.vision_engine.gesture_instance:
+                # 检查当前的实例是不是我们写的那个 TEST 实例
+                if self.vision_engine.gesture_instance.name == "TEST":
+                    print("\n[UI提示] 📥 成功捕获按键！正在导出当前帧手部几何分析数据...")
+                    # 👈 啪！远程开锁！让下一帧在终端打印出来
+                    self.vision_engine.gesture_instance.trigger_capture() 
+        else:
+            # 如果按的是别的键，原封不动抛回给 PyQt 默认机制
+            super().keyPressEvent(event)
+
+
+# 1. 切换到你的项目目录
+cd ~/BIM_Project
+
+# 2. 在树莓派上创建一个全新的本地虚拟环境
+python3 -m venv venv
+
+# 3. 激活这个树莓派环境
+source venv/bin/activate
+
+# 4. 升级包管理器
+pip install --upgrade pip
+
+# 5. 安装极其关键的树莓派专用高性能底层依赖
+# 注意：不带 -headless，因为 PyQt5 需要完整的 GUI 渲染支持
+pip install PyQt5 opencv-python mediapipe
+
+vision_engine.py 中，MediaPipe 的底层默认开销较高，请找到初始化 HandLandmarkerOptions 的位置（约第 49 行），加入 model_complexity=0
+# 修改前：
+base_options = python.BaseOptions(model_asset_path=self.model_path)
+options = vision.HandLandmarkerOptions(base_options=base_options, num_hands=2)
+
+# 🌟 修改后（显著提升树莓派 FPS）：
+from mediapipe.tasks.python import BaseOptions
+base_options = BaseOptions(
+    model_asset_path=self.model_path,
+    delegate=BaseOptions.Delegate.CPU # 树莓派4B上CPU多核加速最稳
+)
+options = vision.HandLandmarkerOptions(
+    base_options=base_options, 
+    num_hands=2,
+    model_complexity=0 # 🌟 核心点：0 代表轻量化移动端模型，1 代表桌面端。树莓派必须设为 0！
+)
+
+你的 vision_engine.py 使用了 cv2.VideoCapture(0, cv2.CAP_DSHOW)（约第 75 行）。
+# 🌟 将 run() 方法中的摄像头启动修改为：
+def run(self):
+    self._is_running = True
+    # 树莓派不需要 CAP_DSHOW
+    self.cap = cv2.VideoCapture(0) 
+    
+    # 🌟 强制将硬件输入分辨率压缩至 320x240 或 640x480
+    # 这能帮树莓派节省 70% 像素点的密集矩阵计算，FPS 直接飙升
+    self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+# 打开 main.py，在 self.resize(1024, 600) 下方添加一行：
+class BIM_App(QStackedWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("BIM Learning System")
+        self.resize(1024, 600)
+        
+        # 🌟 加上这行，让产品开机直接占满 7寸屏，隐藏系统白边，极具高级一体机质感
+        self.setWindowFlags(Qt.FramelessWindowHint)
+
